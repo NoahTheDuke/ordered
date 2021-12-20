@@ -6,6 +6,7 @@
                          IPersistentMap
                          IPersistentVector
                          IEditableCollection
+                         ITransientAssociative2
                          ITransientMap
                          ITransientVector
                          IHashEq
@@ -158,7 +159,7 @@ assoc'ed for the first time. Supports transient."
   ([k v & more]
      (apply assoc empty-ordered-map k v more)))
 
-;; contains? is broken for transients. we could define a closure around a gensym
+;; we could define a closure around a gensym
 ;; to use as the not-found argument to a get, but deftype can't be a closure.
 ;; instead, we pass `this` as the not-found argument and hope nobody makes a
 ;; transient contain itself.
@@ -197,7 +198,15 @@ assoc'ed for the first time. Supports transient."
       this))
   (persistent [this]
     (OrderedMap. (.persistent backing-map)
-                 (.persistent order))))
+                 (.persistent order)))
+
+  ITransientAssociative2
+  (containsKey [this k]
+    (not= (.valAt this k ::not-found) ::not-found))
+  (entryAt [this k]
+    (let [v (.valAt this k ::not-found)]
+      (when (not= v ::not-found)
+        (MapEntry. k v)))))
 
 (defn transient-ordered-map [^OrderedMap om]
   (TransientOrderedMap. (.asTransient ^IEditableCollection (.backing-map om))
