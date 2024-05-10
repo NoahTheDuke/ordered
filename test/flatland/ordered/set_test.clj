@@ -160,11 +160,14 @@
     (is (= (hash m1) (hash m2)))
     (is (= (.hashCode m1) (.hashCode m2)))
     (is (= (hash (ordered-set)) (hash (hash-set))))
-    (is (= (.hashCode (ordered-set)) (.hashCode (hash-set))))))
+    (is (= (.hashCode (ordered-set)) (.hashCode (hash-set))))
+    (is (= (hash (ordered-set nil)) (hash (hash-set nil))))
+    (is (= (.hashCode (ordered-set nil)) (.hashCode (hash-set nil))))
+    (is (= (.hashCode (ordered-set nil :a {:b nil})) (.hashCode (hash-set nil :a {:b nil}))))))
 
 (deftest nil-hash-code-npe
   ;; No assertions here; just check that it doesn't NPE
   ;; See: https://github.com/amalloy/ordered/issues/27
-  (are [contents] (.hashCode (ordered-set contents))
+  (are [contents] (.hashCode (apply ordered-set contents))
     [nil]
     [nil :a]))
