@@ -165,6 +165,11 @@
     (is (= (.hashCode (ordered-set nil)) (.hashCode (hash-set nil))))
     (is (= (.hashCode (ordered-set nil :a {:b nil})) (.hashCode (hash-set nil :a {:b nil}))))))
 
+(deftest nil-and-false-hashes
+  (is (not= (.hashCode (ordered-set nil)) (.hashCode (hash-set false))))
+  (is (not= (.hashCode (ordered-set false)) (.hashCode (hash-set nil))))
+  (is (= (.hashCode (ordered-set false nil)) (.hashCode (hash-set nil false)))))
+
 (deftest nil-hash-code-npe
   ;; No assertions here; just check that it doesn't NPE
   ;; See: https://github.com/amalloy/ordered/issues/27

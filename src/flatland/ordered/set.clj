@@ -56,7 +56,7 @@
   (toString [this]
     (str "#{" (clojure.string/join " " (map str this)) "}"))
   (hashCode [this]
-    (reduce + (keep #(when % (.hashCode ^Object %)) (.seq this))))
+    (reduce + (keep #(when (some? %) (.hashCode ^Object %)) (.seq this))))
   (equals [this other]
     (or (identical? this other)
         (and (instance? Set other)
