@@ -6,9 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+* Remove use of `resolve` in ordered-set. [#71](https://github.com/clj-commons/ordered/issues/71)
+
 ## 1.15.12 - 2024-05-13
 
-* Fix NPE when hashing ordered-set that contain `nil`.
+* Fix NPE when hashing ordered-set that contain `nil`. [#73](https://github.com/clj-commons/ordered/issues/73)
 
 ## 1.15.11 - 2023-03-26
 

@@ -9,13 +9,6 @@
 
 (declare transient-ordered-set)
 
-;; We could use compile-if technique here, but hoping to avoid
-;; an AOT issue using this way instead.
-(def hasheq-ordered-set
-  (or (resolve 'clojure.core/hash-unordered-coll)
-      (fn old-hasheq-ordered-set [^Seqable s]
-        (reduce + (map hash (.seq s))))))
-
 (deftype OrderedSet [^clojure.lang.IPersistentMap k->i
                      ^clojure.lang.IPersistentVector i->k]
   IPersistentSet
@@ -66,7 +59,7 @@
 
   IHashEq
   (hasheq [this]
-    (hasheq-ordered-set this))
+    (hash-unordered-coll this))
   
   Set
   (iterator [this]
